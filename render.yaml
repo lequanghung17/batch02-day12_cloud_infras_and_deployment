@@ -1,18 +1,26 @@
 services:
   - type: web
-    name: day12-quickstart-agent
-    runtime: python
+    name: day12-legal-rag-agent
+    runtime: docker
     region: singapore
     plan: free
-    rootDir: 03-cloud-deployment/railway
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    rootDir: 06-lab-complete
     healthCheckPath: /health
     autoDeployTrigger: commit
     envVars:
       - key: ENVIRONMENT
         value: production
-      - key: PYTHON_VERSION
-        value: 3.11.0
+      - key: APP_NAME
+        value: Vietnamese Legal RAG Agent
+      - key: APP_VERSION
+        value: "1.0.0"
       - key: AGENT_API_KEY
         generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DAILY_BUDGET_USD
+        value: "5.0"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "20"
+      - key: LEGAL_RAG_DATA_DIR
+        value: /app/data

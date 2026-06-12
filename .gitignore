@@ -1,11 +1,11 @@
-# ── Secrets ──────────────────────────────────────────────
+# Secrets
 .env
 .env.local
 .env.production
 .env.*
 !.env.example
 
-# ── Python ──────────────────────────��────────────────────
+# Python
 __pycache__/
 *.pyc
 *.pyo
@@ -15,24 +15,37 @@ __pycache__/
 dist/
 build/
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.uv-cache/
 
-# ── Virtual environments ──────────────────────────────────
+# Virtual environments
 venv/
 env/
 .venv/
 venv312/
 .venv312/
+.streamlitvenv/
 
-# ── IDE ──────────────────────────────��────────────────────
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# ── OS ────────────────────────────────────────────────────
+# OS
 .DS_Store
 Thumbs.db
 
-# ── Docker volumes (local dev) ─────────────────────��──────
+# Logs
+*.log
+*.err
+*.out
+
+# Docker volumes and local generated data
 data/
 volumes/
+
+# Keep the final assignment knowledge base for Render deployment.
+!06-lab-complete/data/
+!06-lab-complete/data/*.md
