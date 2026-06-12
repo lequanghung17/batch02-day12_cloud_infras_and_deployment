@@ -1,18 +1,18 @@
 services:
   - type: web
-    name: ai-agent-production
+    name: day12-legal-rag-agent
     runtime: docker
     region: singapore
-    plan: starter
+    plan: free
     healthCheckPath: /health
-    autoDeploy: true
+    autoDeployTrigger: commit
     envVars:
       - key: ENVIRONMENT
         value: production
+      - key: APP_NAME
+        value: Vietnamese Legal RAG Agent
       - key: APP_VERSION
         value: "1.0.0"
-      - key: OPENAI_API_KEY
-        sync: false
       - key: AGENT_API_KEY
         generateValue: true
       - key: JWT_SECRET
@@ -21,3 +21,5 @@ services:
         value: "5.0"
       - key: RATE_LIMIT_PER_MINUTE
         value: "20"
+      - key: LEGAL_RAG_DATA_DIR
+        value: /app/data

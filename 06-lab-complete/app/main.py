@@ -32,7 +32,8 @@ import uvicorn
 from app.config import settings
 
 # Mock LLM (thay bằng OpenAI/Anthropic khi có API key)
-from utils.mock_llm import ask as llm_ask
+from app.legal_rag_agent import answer_question as llm_ask
+from app.legal_rag_agent import knowledge_base_stats
 
 # ─────────────────────────────────────────────────────────
 # Logging — JSON structured
@@ -145,7 +146,8 @@ async def request_middleware(request: Request, call_next):
         # Security headers
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
-        response.headers.pop("server", None)
+        if "server" in response.headers:
+            del response.headers["server"]
         duration = round((time.time() - start) * 1000, 1)
         logger.info(json.dumps({
             "event": "request",
@@ -182,6 +184,7 @@ def root():
         "app": settings.app_name,
         "version": settings.app_version,
         "environment": settings.environment,
+        "agent": "Vietnamese Legal RAG Agent",
         "endpoints": {
             "ask": "POST /ask (requires X-API-Key)",
             "health": "GET /health",
@@ -231,7 +234,11 @@ async def ask_agent(
 def health():
     """Liveness probe. Platform restarts container if this fails."""
     status = "ok"
-    checks = {"llm": "mock" if not settings.openai_api_key else "openai"}
+    kb_stats = knowledge_base_stats()
+    checks = {
+        "agent": "vietnamese-legal-rag",
+        "knowledge_base": kb_stats,
+    }
     return {
         "status": status,
         "version": settings.app_version,
